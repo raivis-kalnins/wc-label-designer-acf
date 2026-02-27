@@ -43,67 +43,19 @@ jQuery(function($){
     });
 
     // Form submit
-    $('form.cart').on('submit',function(e){
-        var productId = $form.find('input[name="add-to-cart"]').val() || $('#wcld-save-design-btn').data('product-id');
-        if(!productId) return alert('Product ID missing!');
-        e.preventDefault();
-        var $form=$(this);
-        var productId = $form.find('input[name="add-to-cart"]').val();
-        if(!productId) return alert('Product ID missing!');
-
-        // Collect layers
-        var layers=[];
-        $('.wcld-layer').each(function(){
-            var $l=$(this);
-            layers.push({
-                id:$l.attr('id'),
-                text:$l.text(),
-                html:$l.html(),
-                css:{
-                    top:$l.css('top'),
-                    left:$l.css('left'),
-                    width:$l.css('width'),
-                    height:$l.css('height'),
-                    fontSize:$l.css('font-size')
-                }
-            });
-        });
-
-        var designJson = JSON.stringify({
-            width:$area.width(),
-            height:$area.height(),
-            layers:layers
-        });
-
-        $('#design_json').val(designJson);
-
-        // html2canvas -> PNG
-        html2canvas($area[0]).then(function(canvas){
-            var pdfData = canvas.toDataURL('image/png');
-            $('#design_pdf').val(pdfData);
-
-            // AJAX call to save design & add to cart
-            $.post(wcldData.ajax, {
-                action:'wcld_save_design',
-                product_id: productId,
-                design_json: designJson,
-                design_pdf: pdfData,
-                _wpnonce: wcldData.nonce
-            }, function(response){
-                if(response.success){
-                    $(document.body).trigger('wc_fragment_refresh'); // refresh mini-cart
-                    $form.off('submit').submit(); // continue normal checkout
-                } else {
-                    alert('Failed to add design to cart.');
-                    console.error(response);
-                    $form.off('submit').submit();
-                }
-            }).fail(function(){
-                $form.off('submit').submit();
-            });
-
-        }).catch(function(){
-            $form.off('submit').submit();
-        });
+     $('form.cart').on('submit', function(){
+        if(window.wcldDesigner){
+            var json = window.wcldDesigner.getDesignJSON();
+            if($('#label_design_json').length === 0){
+                $('<input>').attr({
+                    type: 'hidden',
+                    id: 'label_design_json',
+                    name: 'label_design_json',
+                    value: json
+                }).appendTo(this);
+            } else {
+                $('#label_design_json').val(json);
+            }
+        }
     });
 });

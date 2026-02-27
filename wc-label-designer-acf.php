@@ -150,3 +150,35 @@ function wcld_ajax_save_design() {
 
     wp_send_json_success('Design saved to cart');
 }
+
+// Save design data to cart items
+add_filter('woocommerce_add_cart_item_data', function($cart_item_data, $product_id){
+    // Check if design JSON exists in POST
+    if(isset($_POST['label_design_json'])){
+        $cart_item_data['label_design'] = sanitize_text_field($_POST['label_design_json']);
+
+        // Generate PDF using existing plugin function
+        if(function_exists('wcld_generate_pdf')) {
+            $upload_dir = wp_upload_dir();
+            $pdf_path = $upload_dir['basedir'] . '/label_design_' . time() . '.pdf';
+            wcld_generate_pdf($_POST['label_design_json'], $pdf_path);
+            $cart_item_data['label_pdf'] = $pdf_path;
+        }
+
+        // Unique key prevents WooCommerce from merging products
+        $cart_item_data['unique_key'] = md5(microtime() . rand());
+    }
+
+    return $cart_item_data;
+}, 10, 2);
+
+// Show design in cart & checkout
+add_filter('woocommerce_get_item_data', function($item_data, $cart_item){
+    if(!empty($cart_item['label_design'])){
+        $item_data[] = [
+            'name' => 'Custom Label',
+            'value' => 'Yes'
+        ];
+    }
+    return $item_data;
+}, 10, 2);
