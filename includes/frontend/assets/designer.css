@@ -1,0 +1,45 @@
+.wcld-fields {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 6px 10px;
+    margin-bottom: 15px;
+}
+.wcld-fields label { font-weight: 600; align-self: center; }
+.wcld-fields input[type="text"] { width:100%; padding:4px 6px; border:1px solid #ccc; border-radius:3px; }
+
+#wcld-design-area {
+    position: relative;
+    width: 100% !important;
+    height: 500px;
+    border:1px solid #ccc;
+    margin:15px 0;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+
+.wcld-layer {
+    position: absolute;
+    padding: 4px 6px;
+    background: rgba(255,255,255,0.6);
+    border: 1px dashed #999;
+    cursor: move;
+    font-size: 14px;
+    min-width: 40px;
+    min-height: 20px;
+    max-width: 100px;
+}
+
+.safe-zone {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    right: 5%;
+    bottom: 5%;
+    border: 1px dashed red;
+    pointer-events: none;
+}
+
+.wcld-product-gallery { display:flex; gap:5px; margin-bottom:10px; }
+.wcld-gallery-image { width:60px; height:60px; object-fit:cover; cursor:pointer; border:2px solid #ccc; border-radius:3px; transition:border-color 0.2s; }
+.wcld-gallery-image:hover { border-color:#0071a1; }

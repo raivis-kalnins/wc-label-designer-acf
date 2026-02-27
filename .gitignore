@@ -1,0 +1,21 @@
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE files
+*.idea/
+*.vscode/
+
+# Ignore logs and temp files
+*.log
+*.tmp
+*.bak
+
+# Ignore uploads (optional, if you plan to use media)
+wp-content/uploads/
+
+# Ignore node_modules if using npm
+node_modules/
+
+# Ignore composer vendor folder
+vendor/

@@ -1,0 +1,50 @@
+{
+  "key": "group_wcld_product",
+  "title": "WCLD – Product Settings",
+  "fields": [
+    {
+      "key": "field_wcld_enable",
+      "label": "Enable Label Designer",
+      "name": "wcld_enable",
+      "type": "true_false",
+      "ui": 1
+    },
+    {
+      "key": "field_wcld_width_override",
+      "label": "Label Width (override)",
+      "name": "wcld_width_override",
+      "type": "number"
+    },
+    {
+      "key": "field_wcld_height_override",
+      "label": "Label Height (override)",
+      "name": "wcld_height_override",
+      "type": "number"
+    },
+    {
+      "key": "field_wcld_bleed_override",
+      "label": "Bleed (override)",
+      "name": "wcld_bleed_override",
+      "type": "number"
+    },
+    {
+      "key": "field_wcld_bg_override",
+      "label": "Background Image (override)",
+      "name": "wcld_bg_override",
+      "type": "image",
+      "return_format": "url"
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "product"
+      }
+    ]
+  ],
+  "position": "normal",
+  "style": "default",
+  "active": true
+}
