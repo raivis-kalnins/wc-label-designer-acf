@@ -1,24 +1,39 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+if (!defined('ABSPATH')) exit;
 
 class WCLD_Helpers {
-    public function __construct() {}
-
-    public static function is_enabled_for_product( $product_id ) {
-        if ( ! $product_id ) return false;
-
-        $product_enabled = get_field( 'wcld_enable', $product_id );
-        if ( $product_enabled ) return true;
-
-        $bulk_products = get_field( 'wcld_bulk_products', 'option' ) ?: [];
-        if ( in_array( $product_id, $bulk_products ) ) return true;
-
-        $enabled_categories = get_field( 'wcld_categories', 'option' ) ?: [];
-        if ( $enabled_categories ) {
-            $product_cats = wp_get_post_terms( $product_id, 'product_cat', ['fields'=>'ids'] );
-            if ( array_intersect( $product_cats, $enabled_categories ) ) return true;
+    
+    /**
+     * Check if designer is enabled for product
+     */
+    public static function is_enabled_for_product($product_id) {
+        // Check if ACF function exists
+        if (!function_exists('get_field')) {
+            return false;
         }
-
+        
+        // Check product-level setting
+        $enabled = get_field('wcld_enable', $product_id);
+        if ($enabled === true || $enabled === '1' || $enabled === 1) {
+            return true;
+        }
+        
         return false;
+    }
+    
+    /**
+     * Get design preview HTML
+     */
+    public static function get_design_preview($design_json, $image_url = '') {
+        $html = '<div class="wcld-design-preview">';
+        
+        if ($image_url) {
+            $html .= '<img src="' . esc_url($image_url) . '" alt="Label Design" style="max-width:150px;max-height:150px;">';
+        }
+        
+        $html .= '<br><a href="#" class="button wcld-view-design-btn" data-design=\'' . esc_attr($design_json) . '\'>View Design Details</a>';
+        $html .= '</div>';
+        
+        return $html;
     }
 }
